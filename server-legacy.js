@@ -4,14 +4,14 @@ const http = require('http');
 const port = 3000;
 
 const server = http.createServer((req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.url === '/' || req.url === '/index.html') {
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    
-    const html = `<!DOCTYPE html>
+    if (req.url === '/' || req.url === '/index.html') {
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+
+        const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -27,8 +27,8 @@ const server = http.createServer((req, res) => {
 <body class="min-h-screen bg-gradient-to-b from-black to-gray-900 dark:from-black dark:to-gray-900 transition-colors">
 
     <div class="min-h-screen flex flex-col">
-        <div class="container mx-auto px-4 py-8 flex-1 flex flex-col">
-            <header class="text-center mb-8">
+        <div class="container mx-auto px-4 pt-8 pb-2 flex-1 flex flex-col">
+            <header class="text-center mt-24">
                 <h1 class="text-4xl font-bold text-white dark:text-white mb-4">Material Forge</h1>
                 <p class="text-xl text-gray-300 dark:text-gray-300 max-w-2xl mx-auto">
                     Transform any design into every possible material with AI. 
@@ -36,7 +36,7 @@ const server = http.createServer((req, res) => {
                 </p>
             </header>
 
-            <div class="max-w-6xl mx-auto flex-1 flex flex-col justify-center">
+            <div class="max-w-7xl mx-auto flex-1 flex flex-col justify-center">
             <!-- Upload Section -->
             <div id="uploadSection" class="transition-all duration-500 ease-in-out">
                 <!-- Collapsed Header (hidden by default) -->
@@ -58,7 +58,7 @@ const server = http.createServer((req, res) => {
                 </div>
                 
                 <!-- Full Upload Area -->
-                <div id="fullUpload" class="border-2 border-dashed border-gray-700 dark:border-gray-700 rounded-lg p-12 text-center hover:border-gray-600 dark:hover:border-gray-600 transition-colors">
+                <div id="fullUpload" class="border-2 border-dashed border-gray-700 dark:border-gray-700 rounded-lg p-32 text-center hover:border-gray-600 dark:hover:border-gray-600 transition-colors">
                     <div class="space-y-4">
                         <div class="flex justify-center">
                             <img src="/sketch.png" alt="Design" class="w-16 h-16" style="filter: brightness(0) saturate(100%) invert(70%) sepia(76%) saturate(2474%) hue-rotate(193deg) brightness(97%) contrast(89%);">
@@ -78,14 +78,13 @@ const server = http.createServer((req, res) => {
                 </div>
             </div>
 
-            <div id="results" class="mt-8 hidden">
+            <div id="results" class="mt-8 hidden max-w-7xl mx-auto w-full">
                 <div class="bg-gray-900 dark:bg-gray-900 rounded-lg shadow-lg p-8 border border-gray-800 dark:border-gray-800">
                     <h2 class="text-2xl font-semibold mb-6 text-center text-white dark:text-white">Material Forge AI Pipeline</h2>
                     <div class="space-y-6">
                         <div class="flex justify-center">
                             <div id="uploadedImageContainer" class="hidden mb-4">
                                 <div class="max-w-md mx-auto">
-                                    <p class="text-sm text-gray-400 dark:text-gray-400 mb-2 text-center">Original Design:</p>
                                     <img id="uploadedImage" src="" alt="Uploaded design" class="w-full h-auto rounded-lg shadow-sm border border-gray-700 dark:border-gray-700">
                                 </div>
                             </div>
@@ -117,40 +116,29 @@ const server = http.createServer((req, res) => {
                                         <div class="w-full bg-black dark:bg-black rounded-full h-3 mb-2">
                                             <div id="progressBar" class="bg-gradient-to-r from-purple-500 to-blue-500 h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
                                         </div>
-                                        <p id="currentMaterial" class="text-sm text-gray-300 dark:text-gray-300 italic">Getting ready...</p>
+                                        <p id="currentMaterial" class="text-sm text-gray-300 dark:text-gray-300 italic">Initializing...</p>
                                     </div>
                                 </div>
                             </div>
                             
-                            <!-- Fun Phase Indicators -->
-                            <div class="text-center text-gray-300 dark:text-gray-300">
-                                <div class="text-sm space-y-3">
-                                    <div id="phase1" class="flex items-center justify-center space-x-3 p-2 rounded-lg transition-all">
-                                        <div class="w-3 h-3 bg-purple-500 rounded-full animate-pulse"></div>
-                                        <span class="font-medium text-gray-300 dark:text-gray-300">🔍 Material Discovery & Validation</span>
-                                        <div class="text-xl">🧙‍♂️</div>
-                                    </div>
-                                    <div id="phase2" class="flex items-center justify-center space-x-3 p-2 rounded-lg transition-all opacity-50">
-                                        <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
-                                        <span class="font-medium text-gray-300 dark:text-gray-300">⚡ Parallel Material Transformation</span>
-                                        <div class="text-xl">🔬</div>
-                                    </div>
-                                    <div id="phase3" class="flex items-center justify-center space-x-3 p-2 rounded-lg transition-all opacity-50">
-                                        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                                        <span class="font-medium text-gray-300 dark:text-gray-300">✨ Quality Assurance & Magic Polish</span>
-                                        <div class="text-xl">🎩</div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="gallery" class="mt-8 hidden">
+            <div id="gallery" class="mt-8 hidden max-w-7xl mx-auto w-full">
                 <div class="bg-gray-900 dark:bg-gray-900 rounded-lg shadow-lg p-6 border border-gray-800 dark:border-gray-800">
-                    <h2 class="text-2xl font-semibold mb-6 text-white dark:text-white">Material Transformations</h2>
-                    <div id="galleryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-semibold text-white dark:text-white">Material Transformations</h2>
+                        <button id="downloadAllBtn" class="bg-blue-600 dark:bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                                title="Download All">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                            </svg>
+                            <span>Download All</span>
+                        </button>
+                    </div>
+                    <div id="galleryGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                         <!-- Results will be inserted here -->
                     </div>
                 </div>
@@ -188,7 +176,7 @@ const server = http.createServer((req, res) => {
                     <img id="viewerImage" src="" alt="" class="max-w-full max-h-full object-contain">
                     
                     <!-- Image info -->
-                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-center">
+                    <div class="mt-4 text-white text-center">
                         <h3 id="viewerTitle" class="text-xl font-semibold mb-1"></h3>
                         <p id="viewerCounter" class="text-sm opacity-75"></p>
                     </div>
@@ -200,33 +188,33 @@ const server = http.createServer((req, res) => {
     <script src="app.js"></script>
 </body>
 </html>`;
-    
-    res.end(html);
-  } else if (req.url === '/app.js') {
-    res.writeHead(200, { 'Content-Type': 'application/javascript' });
-    res.end(getAppJS());
-  } else if (req.url === '/sketch.png') {
-    const fs = require('fs');
-    const path = require('path');
-    const filePath = path.join(__dirname, 'sketch.png');
-    
-    fs.readFile(filePath, (err, data) => {
-      if (err) {
+
+        res.end(html);
+    } else if (req.url === '/app.js') {
+        res.writeHead(200, { 'Content-Type': 'application/javascript' });
+        res.end(getAppJS());
+    } else if (req.url === '/sketch.png') {
+        const fs = require('fs');
+        const path = require('path');
+        const filePath = path.join(__dirname, 'sketch.png');
+
+        fs.readFile(filePath, (err, data) => {
+            if (err) {
+                res.writeHead(404, { 'Content-Type': 'text/plain' });
+                res.end('404 Not Found');
+                return;
+            }
+            res.writeHead(200, { 'Content-Type': 'image/png' });
+            res.end(data);
+        });
+    } else {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('404 Not Found');
-        return;
-      }
-      res.writeHead(200, { 'Content-Type': 'image/png' });
-      res.end(data);
-    });
-  } else {
-    res.writeHead(404, { 'Content-Type': 'text/plain' });
-    res.end('404 Not Found');
-  }
+    }
 });
 
 function getAppJS() {
-  return `
+    return `
 const API_KEY = '${process.env.NEXT_PUBLIC_GEMINI_API_KEY || 'YOUR_API_KEY_HERE'}';
 const GEMINI_API_BASE = 'https://generativelanguage.googleapis.com/v1';
 const GEMINI_API_BASE_BETA = 'https://generativelanguage.googleapis.com/v1beta';
@@ -234,6 +222,12 @@ const GEMINI_API_BASE_BETA = 'https://generativelanguage.googleapis.com/v1beta';
 // Dark Mode - permanently enabled
 document.addEventListener('DOMContentLoaded', function() {
     document.documentElement.classList.add('dark');
+    
+    // Setup download all button listener
+    const downloadAllBtn = document.getElementById('downloadAllBtn');
+    if (downloadAllBtn) {
+        downloadAllBtn.addEventListener('click', downloadAllImages);
+    }
 });
 
 // Setup drag and drop
@@ -399,9 +393,7 @@ function updateMaterialProgress(completed, total, currentMaterial = '') {
     document.getElementById('progressBar').style.width = \`\${percentage}%\`;
     
     if (currentMaterial) {
-        const emojis = ['✨', '🔮', '⚡', '🎨', '🌟', '💫', '🎭', '🔥'];
-        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-        document.getElementById('currentMaterial').innerHTML = \`\${randomEmoji} Crafting \${currentMaterial}...\`;
+        document.getElementById('currentMaterial').innerHTML = \`→ Rendering \${currentMaterial}\`;
     }
 }
 
@@ -423,17 +415,15 @@ function activatePhase(phaseNumber) {
 async function runMaterialForgePipeline(imageData) {
     try {
         // Phase 1: Discover materials with validation
-        activatePhase(1);
-        updateProgressMessage('🔮 Analyzing your design...', 'Our AI wizard is studying your creation');
+        updateProgressMessage('🔍 Analyzing material composition...', 'Identifying optimal material transformations');
         
         const materials = await discoverMaterials(imageData);
         
-        updateProgressMessage(\`🎉 Found \${materials.length} magical materials!\`, 'Preparing the transformation laboratory');
+        updateProgressMessage(\`✓ Identified \${materials.length} compatible materials\`, 'Initializing advanced rendering pipeline');
         showMaterialCounter(materials.length);
         
         // Phase 2: Transform materials in parallel batches
-        activatePhase(2);
-        updateProgressMessage('⚡ Material transformation in progress...', 'Watch the magic happen in real-time');
+        updateProgressMessage('⚡ Processing material variations...', 'Parallel rendering across material specifications');
         
         const BATCH_SIZE = 5; // Process 5 materials in parallel
         const transformations = [];
@@ -444,7 +434,7 @@ async function runMaterialForgePipeline(imageData) {
             
             // Update current materials being processed
             const materialNames = batch.map(m => m.name).join(', ');
-            updateProgressMessage('⚡ Parallel transformation magic!', \`Currently transforming: \${materialNames}\`);
+            updateProgressMessage('⚡ Executing parallel transformations', \`Processing: \${materialNames}\`);
             
             // Process batch in parallel
             const batchPromises = batch.map(async (material) => {
@@ -479,19 +469,19 @@ async function runMaterialForgePipeline(imageData) {
         
         // Phase 3: Final polish
         activatePhase(3);
-        updateProgressMessage('✨ Adding magical finishing touches...', 'Polishing your material collection');
+        updateProgressMessage('✨ Finalizing renderings...', 'Applying post-processing refinements');
         
         // Brief pause for dramatic effect
         await new Promise(resolve => setTimeout(resolve, 1000));
         
-        updateProgressMessage(\`🎩 Transformation complete!\`, \`Successfully created \${transformations.length} material variations\`);
+        updateProgressMessage(\`✓ Rendering complete\`, \`Generated \${transformations.length} high-fidelity material variations\`);
         
         // Show results after a moment
         setTimeout(() => showResults(transformations), 1500);
         
     } catch (error) {
         console.error('Pipeline error:', error);
-        updateProgressMessage('❌ Oops! Magic spell failed', '');
+        updateProgressMessage('❌ Processing error encountered', '');
         document.getElementById('progressSubtext').innerHTML = error.message.replace(/\\n/g, '<br>');
         
         // Hide the loading spinner when there's an error
@@ -708,10 +698,10 @@ function showResults(transformations) {
     
     transformations.forEach(transformation => {
         const card = document.createElement('div');
-        card.className = 'bg-gray-800 dark:bg-gray-800 rounded-lg p-4 border border-gray-700 dark:border-gray-700';
+        card.className = 'bg-gray-900 dark:bg-gray-900 rounded-lg p-4 border border-gray-800 dark:border-gray-800';
         
         card.innerHTML = \`
-            <div class="mb-3 bg-gray-900 dark:bg-gray-900 rounded-lg overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition-shadow border border-gray-700 dark:border-gray-700"
+            <div class="mb-3 bg-black dark:bg-black rounded-lg overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition-shadow border border-gray-800 dark:border-gray-800"
                  onclick="openImageViewer(\${transformations.indexOf(transformation)})">
                 <img src="\${transformation.image}" alt="\${transformation.material.name} version" 
                      class="w-full h-auto object-contain hover:scale-105 transition-transform">
@@ -719,9 +709,12 @@ function showResults(transformations) {
             <div class="text-center">
                 <h3 class="font-semibold text-lg capitalize mb-3 text-white dark:text-white">\${transformation.material.name}</h3>
                 <div class="flex justify-center space-x-2">
-                    <button class="bg-blue-600 dark:bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors"
-                            onclick="downloadImage('\${transformation.image}', '\${transformation.material.name}')">
-                        Download
+                    <button class="bg-blue-600 dark:bg-blue-600 text-white p-2 rounded hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors"
+                            onclick="downloadImage('\${transformation.image}', '\${transformation.material.name}')"
+                            title="Download">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -736,6 +729,19 @@ function downloadImage(imageData, materialName) {
     link.href = imageData;
     link.download = \`materialforge-\${materialName}.png\`;
     link.click();
+}
+
+function downloadAllImages() {
+    if (!window.currentTransformations || window.currentTransformations.length === 0) {
+        return;
+    }
+    
+    // Download each image with a small delay to avoid browser blocking
+    window.currentTransformations.forEach((transformation, index) => {
+        setTimeout(() => {
+            downloadImage(transformation.image, transformation.material.name);
+        }, index * 500); // 500ms delay between downloads
+    });
 }
 
 // Image Viewer functionality
@@ -816,6 +822,6 @@ document.getElementById('imageViewer').addEventListener('click', function(e) {
 }
 
 server.listen(port, () => {
-  console.log(`🚀 Material Forge server running at http://localhost:${port}`);
-  console.log('🎨 Upload an image to test the AI material transformation pipeline!');
+    console.log(`🚀 Material Forge server running at http://localhost:${port}`);
+    console.log('🎨 Upload an image to test the AI material transformation pipeline!');
 });

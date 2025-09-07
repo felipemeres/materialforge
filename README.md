@@ -4,8 +4,6 @@
 
 Transform any design into every possible material using Gemini 2.5 Flash Image Preview (Nano Banana). Upload a sketch, photo, or design and watch it come to life in wood, metal, glass, fabric, and dozens of other materials.
 
-![Material Forge Demo](https://via.placeholder.com/800x400/667eea/ffffff?text=Material Forge+AI+Pipeline)
-
 ## 🎯 What is Material Forge?
 
 Material Forge is an innovative AI tool that solves a core design workflow problem: **material exploration**. Designers typically spend hours or days manually exploring how their creations would look in different materials. Material Forge compresses this process from days to minutes using advanced AI.
@@ -30,10 +28,10 @@ Material Forge is an innovative AI tool that solves a core design workflow probl
 
 ### Prerequisites
 
-- Node.js 18.0 or higher
+- Node.js 18.0 or higher (for local development)
 - Gemini API key (get one at [ai.google.dev](https://ai.google.dev))
 
-### Installation
+### Local Development
 
 1. **Clone the repository**
    ```bash
@@ -55,9 +53,10 @@ Material Forge is an innovative AI tool that solves a core design workflow probl
    
    **Important:** Never commit your actual API key to version control. The `.env.local` file is already excluded in `.gitignore`.
 
-4. **Start the server**
+4. **Start the development server**
    ```bash
    npm start
+   # or npm run dev
    ```
 
 5. **Open in browser**
@@ -151,22 +150,3 @@ Material Forge was created for the Kaggle Nano Banana Hackathon. Contributions a
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Google Gemini Team** for the incredible Nano Banana model
-- **Kaggle** for hosting the Nano Banana Hackathon
-- **Design Community** for inspiration and feedback
-- **Open Source Contributors** who make projects like this possible
-
-## 📞 Support
-
-- **Issues**: [GitHub Issues](https://github.com/your-username/materialforge/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-username/materialforge/discussions)
-- **Email**: your.email@example.com
-
----
-
-**Built with ❤️ for designers everywhere**
-
-*Transform your designs, transform your workflow*
