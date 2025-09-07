@@ -1,0 +1,27 @@
+{
+  "name": "materialforge",
+  "version": "1.0.0",
+  "description": "AI-powered material transformation pipeline for designers. Transform any design into every possible material using Gemini 2.5 Flash Image Preview.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "ai",
+    "design",
+    "material-transformation",
+    "gemini",
+    "nano-banana",
+    "hackathon",
+    "kaggle"
+  ],
+  "author": "Felipe Meres",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
