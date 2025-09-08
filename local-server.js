@@ -1,11 +1,18 @@
 // Local development server for Material Forge
 // This serves the same files that Vercel will serve in production
-require('dotenv').config({ path: '.env.local' });
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+import dotenv from 'dotenv';
+import http from 'http';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const port = 3000;
+// ES module equivalents for __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: '.env.local' });
+
+const port = 3100;
 
 // Simple static file server
 const server = http.createServer((req, res) => {

@@ -370,7 +370,7 @@ async function discoverMaterials(imageData) {
     `;
 
     try {
-        const response = await fetch(`${GEMINI_API_BASE}/models/gemini-2.5-flash-lite:generateContent?key=${API_KEY}`, {
+        const response = await fetch(`${GEMINI_API_BASE}/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -497,7 +497,7 @@ async function validateTransformation(originalImage, transformedImage, material)
     `;
 
     try {
-        const response = await fetch(`${GEMINI_API_BASE}/models/gemini-2.5-flash-lite:generateContent?key=${API_KEY}`, {
+        const response = await fetch(`${GEMINI_API_BASE}/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
