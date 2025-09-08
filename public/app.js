@@ -370,7 +370,7 @@ async function discoverMaterials(imageData) {
     `;
 
     try {
-        const response = await fetch(`${GEMINI_API_BASE}/models/gemini-2.5-flash-lite:generateContent?key=${API_KEY}`, {
+        const response = await fetch(`${GEMINI_API_BASE}/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -384,6 +384,15 @@ async function discoverMaterials(imageData) {
         });
 
         const result = await response.json();
+        
+        // Debug logging
+        console.log('API Response:', result);
+        
+        if (!result.candidates || result.candidates.length === 0) {
+            console.error('No candidates in response:', result);
+            throw new Error('API returned no candidates. Response: ' + JSON.stringify(result));
+        }
+        
         const responseText = result.candidates[0].content.parts[0].text;
         const jsonMatch = responseText.match(/{[\s\S]*}/);
         
@@ -488,7 +497,7 @@ async function validateTransformation(originalImage, transformedImage, material)
     `;
 
     try {
-        const response = await fetch(`${GEMINI_API_BASE}/models/gemini-2.5-flash-lite:generateContent?key=${API_KEY}`, {
+        const response = await fetch(`${GEMINI_API_BASE}/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
