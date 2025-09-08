@@ -80,22 +80,20 @@
 
                 <div id="results" class="mt-8 hidden max-w-7xl mx-auto w-full">
                     <div
-                        class="bg-gray-900 dark:bg-gray-900 rounded-lg shadow-lg p-8 border border-gray-800 dark:border-gray-800">
+                        class="bg-gray-900 dark:bg-gray-900 rounded-lg shadow-lg p-8 border border-gray-800 dark:border-gray-800 w-full min-w-0">
                         <h2 class="text-2xl font-semibold mb-6 text-center text-white dark:text-white">Material Forge AI
                             Pipeline</h2>
-                        <div class="space-y-6">
+                        <div class="space-y-6 w-full">
                             <div class="flex justify-center">
                                 <div id="uploadedImageContainer" class="hidden mb-4">
                                     <div class="max-w-md mx-auto">
-                                        <p class="text-sm text-gray-400 dark:text-gray-400 mb-2 text-center">Original
-                                            Design:</p>
                                         <img id="uploadedImage" src="" alt="Uploaded design"
                                             class="w-full h-auto rounded-lg shadow-sm border border-gray-700 dark:border-gray-700">
                                     </div>
                                 </div>
                             </div>
                             <!-- Whimsical Progress Indicator -->
-                            <div class="text-center">
+                            <div class="text-center w-full">
                                 <div class="flex justify-center mb-4">
                                     <div
                                         class="animate-spin rounded-full h-16 w-16 border-4 border-gray-800 dark:border-gray-800 border-t-blue-400">
@@ -103,18 +101,18 @@
                                 </div>
 
                                 <!-- Main Progress Message -->
-                                <div class="mb-6">
+                                <div class="mb-6 w-full">
                                     <p id="progressMessage"
-                                        class="text-xl font-bold text-blue-400 dark:text-blue-400 mb-2">🔮 Analyzing
+                                        class="text-xl font-bold text-blue-400 dark:text-blue-400 mb-2 break-words">🔮 Analyzing
                                         your design...</p>
-                                    <p id="progressSubtext" class="text-md text-gray-300 dark:text-gray-300">Preparing
+                                    <p id="progressSubtext" class="text-md text-gray-300 dark:text-gray-300 break-words">Preparing
                                         for material transformation magic</p>
                                 </div>
 
                                 <!-- Material Counter -->
                                 <div id="materialCounter" class="mb-6 hidden">
                                     <div
-                                        class="bg-gradient-to-r from-gray-900 to-gray-800 dark:from-gray-900 dark:to-gray-800 rounded-lg p-4 max-w-md mx-auto border border-gray-800 dark:border-gray-800">
+                                        class="bg-gradient-to-r from-gray-900 to-gray-800 dark:from-gray-900 dark:to-gray-800 rounded-lg p-4 w-full max-w-md mx-auto border border-gray-800 dark:border-gray-800">
                                         <div class="flex items-center justify-center space-x-2 mb-3">
                                             <img src="/sketch.png" alt="Design" class="w-6 h-6"
                                                 style="filter: brightness(0) saturate(100%) invert(70%) sepia(76%) saturate(2474%) hue-rotate(193deg) brightness(97%) contrast(89%);">
@@ -133,7 +131,7 @@
                                                     style="width: 0%"></div>
                                             </div>
                                             <p id="currentMaterial"
-                                                class="text-sm text-gray-300 dark:text-gray-300 italic">Initializing...
+                                                class="text-sm text-gray-300 dark:text-gray-300 italic break-words min-h-[1.25rem]">Initializing...
                                             </p>
                                         </div>
                                     </div>
