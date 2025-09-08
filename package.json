@@ -2,11 +2,10 @@
   "name": "materialforge",
   "version": "1.0.0",
   "description": "AI-powered material transformation pipeline for designers. Transform any design into every possible material using Gemini 2.5 Flash Image Preview.",
-  "main": "server.js",
+  "main": "index.html",
   "scripts": {
     "start": "node local-server.js",
     "dev": "node local-server.js",
-    "legacy": "node server-legacy.js",
     "build": "echo 'No build step required for static deployment'",
     "vercel-build": "echo 'No build step required'"
   },
