@@ -154,3 +154,4 @@ list-models.js
 
 # Environment variables
 .env.local
+.vercel
