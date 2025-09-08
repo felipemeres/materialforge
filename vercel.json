@@ -23,6 +23,14 @@
       "dest": "/api/$1"
     },
     {
+      "src": "/app.js",
+      "dest": "/app.js"
+    },
+    {
+      "src": "/public/(.*)",
+      "dest": "/public/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }

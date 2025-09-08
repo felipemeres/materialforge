@@ -4,6 +4,12 @@
 
 Transform any design into every possible material using Gemini 2.5 Flash Image Preview (Nano Banana). Upload a sketch, photo, or design and watch it come to life in wood, metal, glass, fabric, and dozens of other materials.
 
+## 📺 Demo
+
+[![Material Forge Demo](https://img.youtube.com/vi/hddL4Iwixig/maxresdefault.jpg)](https://www.youtube.com/watch?v=hddL4Iwixig)
+
+*Click the image above to watch the Material Forge demo video*
+
 ## 🎯 What is Material Forge?
 
 Material Forge is an innovative AI tool that solves a core design workflow problem: **material exploration**. Designers typically spend hours or days manually exploring how their creations would look in different materials. Material Forge compresses this process from days to minutes using advanced AI.
