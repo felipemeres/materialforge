@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "AI-powered material transformation pipeline for designers. Transform any design into every possible material using Gemini 2.5 Flash Image Preview.",
   "main": "index.html",
+  "type": "module",
   "scripts": {
     "start": "node local-server.js",
     "dev": "node local-server.js",
