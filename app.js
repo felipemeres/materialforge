@@ -385,12 +385,8 @@ async function discoverMaterials(imageData) {
 
         const result = await response.json();
         
-        // Debug logging
-        console.log('API Response:', result);
-        
         if (!result.candidates || result.candidates.length === 0) {
-            console.error('No candidates in response:', result);
-            throw new Error('API returned no candidates. Response: ' + JSON.stringify(result));
+            throw new Error('API returned no candidates. Please check your API key and try again.');
         }
         
         const responseText = result.candidates[0].content.parts[0].text;
