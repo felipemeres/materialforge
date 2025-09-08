@@ -10,6 +10,10 @@
       "destination": "/api/$1"
     },
     {
+      "source": "/app.js",
+      "destination": "/app.js"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
