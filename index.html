@@ -21,10 +21,32 @@
             box-sizing: border-box !important;
             overflow: hidden !important;
         }
+        #progressMessage {
+            height: 2rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
         #progressSubtext {
-            word-break: break-word !important;
-            overflow-wrap: break-word !important;
-            hyphens: auto !important;
+            height: 1.5rem !important;
+            width: 100% !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            display: block !important;
+            text-align: center !important;
+        }
+        #currentMaterial {
+            height: 1.25rem !important;
+            width: 100% !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            text-align: center !important;
+        }
+        #materialCounter {
+            width: 100% !important;
+            max-width: 28rem !important;
         }
     </style>
 </head>

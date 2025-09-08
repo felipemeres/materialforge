@@ -5,7 +5,7 @@ const GEMINI_API_BASE_BETA = 'https://generativelanguage.googleapis.com/v1beta';
 // Get API key from environment variable endpoint
 let API_KEY = null;
 
-// Initialize API key and dark mode
+// Initialize API key and event listeners
 async function initializeApp() {
     try {
         const response = await fetch('/api/config');
@@ -16,23 +16,12 @@ async function initializeApp() {
         API_KEY = 'YOUR_API_KEY_HERE'; // Fallback
     }
     
-    initializeDarkMode();
     setupEventListeners();
+    setupDownloadButton();
 }
 
-// Dark Mode functionality
-function initializeDarkMode() {
-    // Start with dark mode as default
-    document.documentElement.classList.add('dark');
-    
-    // Check localStorage for saved preference
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    if (savedTheme === 'light') {
-        document.documentElement.classList.remove('dark');
-    }
-    
-    
-    // Setup download all button
+// Setup download button
+function setupDownloadButton() {
     const downloadAllBtn = document.getElementById('downloadAllBtn');
     if (downloadAllBtn) {
         downloadAllBtn.addEventListener('click', downloadAllImages);
@@ -278,8 +267,8 @@ async function runMaterialForgePipeline(imageData) {
             const batch = materials.slice(i, i + BATCH_SIZE);
             
             // Update current materials being processed
-            const materialNames = batch.map(m => m.name).join(', ');
-            updateProgressMessage('⚡ Executing parallel transformations', `Processing: ${materialNames}`);
+            const materialCount = batch.length;
+            updateProgressMessage('⚡ Executing parallel transformations', `Processing batch of ${materialCount} materials...`);
             
             // Process batch in parallel
             const batchPromises = batch.map(async (material) => {
