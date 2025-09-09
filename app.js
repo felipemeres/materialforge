@@ -4,6 +4,7 @@ const GEMINI_API_BASE_BETA = 'https://generativelanguage.googleapis.com/v1beta';
 
 // Get API key from environment variable endpoint
 let API_KEY = null;
+let USER_PROVIDED_API_KEY = null;
 
 // Initialize API key and event listeners
 async function initializeApp() {
@@ -12,12 +13,23 @@ async function initializeApp() {
         const config = await response.json();
         API_KEY = config.apiKey;
     } catch (error) {
-        console.error('Failed to load API configuration:', error);
-        API_KEY = 'YOUR_API_KEY_HERE'; // Fallback
+        console.error('Failed to load API configuration');
+        throw new Error('API configuration failed. Please check your API key setup.');
+    }
+    
+    // Load user API key from localStorage if it exists
+    try {
+        const storedUserApiKey = localStorage.getItem('materialforge_user_api_key');
+        if (storedUserApiKey && storedUserApiKey.startsWith('AIza')) {
+            USER_PROVIDED_API_KEY = storedUserApiKey;
+        }
+    } catch (error) {
+        // Silent fail for localStorage
     }
     
     setupEventListeners();
     setupDownloadButton();
+    setupApiErrorModal();
 }
 
 // Setup download button
@@ -25,6 +37,132 @@ function setupDownloadButton() {
     const downloadAllBtn = document.getElementById('downloadAllBtn');
     if (downloadAllBtn) {
         downloadAllBtn.addEventListener('click', downloadAllImages);
+    }
+}
+
+// Setup API error modal
+function setupApiErrorModal() {
+    const continueBtn = document.getElementById('continueWithApiKey');
+    const cancelBtn = document.getElementById('cancelApiKey');
+    const userApiKeyInput = document.getElementById('userApiKey');
+    
+    if (continueBtn) {
+        continueBtn.addEventListener('click', handleContinueWithApiKey);
+    }
+    
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', closeApiErrorModal);
+    }
+    
+    // Allow Enter key to submit
+    if (userApiKeyInput) {
+        userApiKeyInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleContinueWithApiKey();
+            }
+        });
+    }
+}
+
+function showApiErrorModal() {
+    const modal = document.getElementById('apiErrorModal');
+    const userApiKeyInput = document.getElementById('userApiKey');
+    
+    if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        
+        // Focus on input field
+        if (userApiKeyInput) {
+            setTimeout(() => userApiKeyInput.focus(), 100);
+        }
+    }
+}
+
+function closeApiErrorModal() {
+    const modal = document.getElementById('apiErrorModal');
+    const userApiKeyInput = document.getElementById('userApiKey');
+    
+    if (modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+        
+        // Clear input
+        if (userApiKeyInput) {
+            userApiKeyInput.value = '';
+        }
+    }
+}
+
+function handleContinueWithApiKey() {
+    const userApiKeyInput = document.getElementById('userApiKey');
+    const apiKey = userApiKeyInput?.value?.trim();
+    
+    if (!apiKey) {
+        alert('Please enter your API key');
+        return;
+    }
+    
+    // Basic validation for Google API key format
+    if (!apiKey.startsWith('AIza') || apiKey.length < 30) {
+        alert('Please enter a valid Google AI Studio API key (starts with AIza...)');
+        return;
+    }
+    
+    // Store user-provided API key both in memory and localStorage
+    USER_PROVIDED_API_KEY = apiKey;
+    try {
+        localStorage.setItem('materialforge_user_api_key', apiKey);
+    } catch (error) {
+        // Silent fail for localStorage
+    }
+    
+    // Close modal
+    closeApiErrorModal();
+    
+    // Show success message and retry
+    updateProgressMessage('✨ API key updated!', 'Retrying material transformation...');
+    
+    // Retry the failed operation
+    setTimeout(() => {
+        retryLastOperation();
+    }, 1000);
+}
+
+function getActiveApiKey() {
+    return USER_PROVIDED_API_KEY || API_KEY;
+}
+
+function isApiError(error, response) {
+    // Check for ANY API-related error that could be resolved with a new API key
+    if (response && response.status === 400) return true;  // Bad Request (often API key issues)
+    if (response && response.status === 401) return true;  // Unauthorized
+    if (response && response.status === 403) return true;  // Forbidden
+    if (response && response.status === 429) return true;  // Rate Limited
+    if (error && error.status === 400) return true;
+    if (error && error.status === 401) return true;
+    if (error && error.status === 403) return true;
+    if (error && error.status === 429) return true;
+    if (error && error.message === 'API_LIMIT_REACHED') return true;
+    if (error && error.message === 'API_ERROR') return true;
+    if (error && error.message && error.message.includes('quota')) return true;
+    if (error && error.message && error.message.includes('limit')) return true;
+    if (error && error.message && error.message.includes('RESOURCE_EXHAUSTED')) return true;
+    if (error && error.message && error.message.includes('API returned no candidates')) return true;
+    if (error && error.message && error.message.includes('API key')) return true;
+    if (error && error.message && error.message.includes('authentication')) return true;
+    if (error && error.message && error.message.includes('unauthorized')) return true;
+    if (error && error.message && error.message.includes('forbidden')) return true;
+    if (error && error.message && error.message.includes('Bad Request')) return true;
+    return false;
+}
+
+// Store the last operation for retry
+let lastOperation = null;
+
+function retryLastOperation() {
+    if (lastOperation) {
+        lastOperation();
     }
 }
 
@@ -172,6 +310,9 @@ function handleFileInputChange(event) {
 async function handleFileUpload(file) {
     if (!file) return;
 
+    // Store operation for potential retry
+    lastOperation = () => handleFileUpload(file);
+
     // Collapse the upload section to focus on processing
     collapseUploadSection();
     
@@ -194,6 +335,13 @@ async function handleFileUpload(file) {
         
     } catch (error) {
         console.error('Error processing image:', error);
+        
+        // Check if this is any API error that could be resolved with a new API key
+        if (isApiError(error)) {
+            showApiErrorModal();
+            return;
+        }
+        
         const progressElement = document.getElementById('progressMessage');
         progressElement.innerHTML = error.message.replace(/\n/g, '<br>');
         
@@ -292,6 +440,11 @@ async function runMaterialForgePipeline(imageData) {
                     }
                 } catch (error) {
                     console.error(`Failed to transform to ${material.name}:`, error);
+                    
+                    // If this is any API error, propagate it up
+                    if (isApiError(error)) {
+                        throw error;
+                    }
                 }
                 return null;
             });
@@ -314,6 +467,13 @@ async function runMaterialForgePipeline(imageData) {
         
     } catch (error) {
         console.error('Pipeline error:', error);
+        
+        // Check if this is any API error that could be resolved with a new API key
+        if (isApiError(error)) {
+            showApiErrorModal();
+            return;
+        }
+        
         updateProgressMessage('❌ Processing error encountered', '');
         const progressSub = document.getElementById('progressSubtext');
         if (progressSub) progressSub.innerHTML = error.message.replace(/\n/g, '<br>');
@@ -370,9 +530,12 @@ async function discoverMaterials(imageData) {
     `;
 
     try {
-        const response = await fetch(`${GEMINI_API_BASE}/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+        const response = await fetch(`${GEMINI_API_BASE}/models/gemini-2.5-flash:generateContent`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'x-goog-api-key': getActiveApiKey()
+            },
             body: JSON.stringify({
                 contents: [{
                     parts: [
@@ -404,6 +567,14 @@ async function discoverMaterials(imageData) {
         }
     } catch (error) {
         console.error('Error discovering materials:', error);
+        
+        // Check if this is any API error
+        if (error.status === 429 || isApiError(error)) {
+            const apiError = new Error('API_ERROR');
+            apiError.originalError = error;
+            throw apiError;
+        }
+        
         throw error;
     }
     
@@ -449,9 +620,12 @@ async function transformToMaterial(imageData, material) {
     Make it photorealistic.
     `;
 
-    const response = await fetch(`${GEMINI_API_BASE_BETA}/models/gemini-2.5-flash-image-preview:generateContent?key=${API_KEY}`, {
+    const response = await fetch(`${GEMINI_API_BASE_BETA}/models/gemini-2.5-flash-image-preview:generateContent`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+            'Content-Type': 'application/json',
+            'x-goog-api-key': getActiveApiKey()
+        },
         body: JSON.stringify({
             contents: [{
                 parts: [
@@ -463,6 +637,11 @@ async function transformToMaterial(imageData, material) {
     });
 
     if (!response.ok) {
+        if (response.status === 400 || response.status === 401 || response.status === 403 || response.status === 429) {
+            const apiError = new Error('API_ERROR');
+            apiError.status = response.status;
+            throw apiError;
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
@@ -493,9 +672,12 @@ async function validateTransformation(originalImage, transformedImage, material)
     `;
 
     try {
-        const response = await fetch(`${GEMINI_API_BASE}/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+        const response = await fetch(`${GEMINI_API_BASE}/models/gemini-2.5-flash:generateContent`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'x-goog-api-key': getActiveApiKey()
+            },
             body: JSON.stringify({
                 contents: [{
                     parts: [
@@ -508,6 +690,12 @@ async function validateTransformation(originalImage, transformedImage, material)
         });
 
         if (!response.ok) {
+            // Check if this is an API error that should trigger the popup
+            if (response.status === 400 || response.status === 401 || response.status === 403 || response.status === 429) {
+                const apiError = new Error('API_ERROR');
+                apiError.status = response.status;
+                throw apiError;
+            }
             return { isCorrectMaterial: true, confidence: 0.8, reasoning: "Validation unavailable" };
         }
 
