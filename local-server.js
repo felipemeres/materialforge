@@ -30,9 +30,9 @@ const server = http.createServer((req, res) => {
 
   // Route handling
   if (req.url === '/' || req.url === '/index.html') {
-    serveFile(res, 'index.html', 'text/html');
+    serveFile(res, 'public/index.html', 'text/html');
   } else if (req.url === '/app.js') {
-    serveFile(res, 'app.js', 'application/javascript');
+    serveFile(res, 'public/app.js', 'application/javascript');
   } else if (req.url === '/sketch.png') {
     serveFile(res, 'public/sketch.png', 'image/png');
   } else if (req.url === '/api/config') {
